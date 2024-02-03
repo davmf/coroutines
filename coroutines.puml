@@ -1,0 +1,67 @@
+@startuml coroutines
+
+skinparam Linetype ortho
+
+folder application {
+
+    note as n2
+    * contains coroutines and calls
+    ** ""co_await"",
+    ** ""co_yield"", and
+    ** ""co_return""
+    * chooses which awaiter to use
+    end note
+
+    class "my_coro(): coroutine_result" as my_coro <<function>>
+}
+
+folder library {
+
+    note as n1
+    * provides awaiters with diffferent behaviours
+    * determines which functions can become coroutines
+    * designs coroutines behaviour through promise type
+    end note
+
+    class coroutine_result {
+    }
+
+    struct promise_type {
+        get_return_object(): coroutine_result
+        initial_suspend()
+        final_suspend()
+        return_void()
+        return_value(value)
+        yield_value(value)
+        unhandled_exception()
+    }
+
+    struct suspend_never <<awaiter>> {
+        await_ready(): constexpr bool (true)
+        await_suspend(coroutine_handle<>): void
+        await_resume(): void
+    }
+
+    struct suspend_always <<awaiter>> {
+        await_ready(): constexpr bool (false)
+        await_suspend(coroutine_handle<>): void
+        await_resume(): void
+    }
+
+    struct coroutine_handle<promise_type> {
+
+    }
+
+    coroutine_result *- promise_type
+    promise_type -> coroutine_result
+    promise_type --> suspend_never
+    promise_type --> suspend_always
+    promise_type <.. coroutine_handle
+    suspend_never --> coroutine_handle
+    suspend_always --> coroutine_handle
+}
+
+
+my_coro --> coroutine_result
+
+@enduml
