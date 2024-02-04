@@ -5,6 +5,7 @@ include(CTest)
 enable_testing()
 
 add_executable(coro1 main.cpp)
+target_compile_options(coro1 PUBLIC -std=c++20 -fcoroutines)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

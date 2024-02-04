@@ -11,7 +11,7 @@ struct coroutine_result::promise_type {
 
     auto get_return_object() {
         std::cout << "promise_type::get_return_object()" << std::endl;
-        return coroutine_result{42};
+        return coroutine_result{};
     }
 
     auto initial_suspend() {
@@ -19,7 +19,7 @@ struct coroutine_result::promise_type {
         return std::suspend_never{};
     }
 
-    auto final_suspend() {
+    auto final_suspend() noexcept {
         std::cout << "promise_type::final_suspend()" << std::endl;
 
     }
@@ -33,6 +33,13 @@ struct coroutine_result::promise_type {
         std::cout << "promise_type::unhandled_exception()" << std::endl;
         std::terminate();
     }
+};
+
+
+coroutine_result my_coro() {
+    std::cout << "my_coro::initial_suspend()" << std::endl;
+    co_await std::suspend_always{};
+    std::cout << "my_coro::final_suspend()" << std::endl;
 }
 
 
