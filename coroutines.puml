@@ -28,12 +28,12 @@ folder library {
 
     struct promise_type {
         get_return_object(): coroutine_result
-        initial_suspend()
-        final_suspend()
-        return_void()
+        initial_suspend(): <<awaiter>>
+        final_suspend(): <<awaiter>>
+        return_void(): void
         return_value(value)
         yield_value(value)
-        unhandled_exception()
+        unhandled_exception(): void
     }
 
     struct suspend_never <<awaiter>> {
@@ -49,7 +49,14 @@ folder library {
     }
 
     struct coroutine_handle<promise_type> {
-
+        coroutine_handle<>(): constexpr operator
+        bool(): constexpr operator
+        done(): constexpr bool
+        operator()(): constexpr void
+        resume(): constexpr void
+        destroy(): constexpr void
+        promise(): noop_coroutine_promise&
+        address(): constexpr void*
     }
 
     coroutine_result *- promise_type
