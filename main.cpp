@@ -33,15 +33,15 @@ public:
 };
 
 
-coroutine_result my_coro() {
-    std::cout << "During my_coro" << std::endl;
+coroutine_result my_coroutine() {
+    std::cout << "During my_coroutine" << std::endl;
     co_return;
 }
 
 
 int main(int, char**){
-    std::cout << "Before my_coro\n";
-    auto result = my_coro();
-    std::cout << "After my_coro\n";
+    std::cout << "Before my_coroutine\n";
+    auto result = my_coroutine();
+    std::cout << "After my_coroutine\n";
     return 0;
 }
